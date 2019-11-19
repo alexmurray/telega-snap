@@ -1,0 +1,79 @@
+name: telega
+base: core18
+adopt-info: telega
+summary: Full featured unofficial client for Telegram in GNU Emacs.
+description: |
+  telega.el is full featured unofficial client for Telegram platform for GNU Emacs.
+  Features
+  * Listing chats, reordering chats according to internal Telegram order
+  * Getting info about users, groups and supergroups
+  * Joining chats by invitation link M-x telega-chat-join-by-link RET
+  * Fetching chat history, sending messages, replies, edits, deleting
+  * Creating new groups, upgrading basicgroup to supergroup
+  * Forwarding messages
+  * D-Bus notifications on incoming messages in chats with enabled notifications
+  * VoIP calls, including D-Bus call notification
+  * Downloading files from the cloud
+  * Uploading files/media (also pasting images from clipboard) to the cloud
+  * Display chat actions, such as "@user is typing..."
+  * Display/Update chat's draft message
+  * Company backends for emoji (:<emoji> syntax), usernames, hashtags, bot commands completions
+  * Secret chats
+  * Online global searching chats/contacts/messages
+  * Avatars, Photos, Stickers
+  * Animated GIF, via ffplay
+  * Special messages such as location/live location, voice/video messages, contacts, etc (PARTLY)
+  * Poll messages, Poll creation
+  * Handling local links, such as "tg:" or "https://t.me/xxx" (PARTLY)
+  * ReplyMarkup (inline keyboard buttons) in the messages (PARTLY)
+  * InstantView for web pages
+  * Blocking/Unblocking users, listing blocked users
+  * Inline bots requests, via "@bot query"
+
+grade: stable
+confinement: strict
+
+apps:
+  telega-server:
+    command: telega-server
+    plugs:
+      - network
+
+environment:
+  LD_LIBRARY_PATH: /snap/telega/current/lib
+
+parts:
+  telega:
+    after: [ tdlib ]
+    plugin: make
+    source: https://github.com/zevlg/telega.el
+    source-type: git
+    build-snaps:
+      - emacs
+    override-build: |
+      # can't access normal home as a strictly confined snap
+      sed -i 's|~/.telega|~/snap/telega/common|' telega-customize.el
+      # compile emacs lisp bits
+      make compile
+      # copy in emacs lisp as though it got built
+      mkdir -p /root/parts/telega/install/share/emacs/site-lisp/telega/
+      cp -v *.el* /root/parts/telega/install/share/emacs/site-lisp/telega/
+      # now build server - this is done automatically via make
+      sed -i 's|/usr/local|/root/parts/tdlib/install|' server/Makefile
+      sed -i 's|$(HOME)/.telega|$(DESTDIR)|' server/Makefile
+      snapcraftctl build
+      snapcraftctl set-version "$(git describe --tags)"
+  tdlib:
+    plugin: cmake
+    source: https://github.com/tdlib/td
+    source-type: git
+    source-tag: v1.5.0
+    configflags:
+      - -DCMAKE_BUILD_TYPE=Release
+    build-packages:
+      # clang uses less resources to build tdlib than g++ - which sadly
+      # fails in multipass
+      - clang
+      - zlib1g-dev
+      - libssl-dev
+      - gperf
