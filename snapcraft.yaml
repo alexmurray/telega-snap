@@ -4,7 +4,8 @@ adopt-info: telega
 summary: Full featured unofficial client for Telegram in GNU Emacs.
 description: |
   telega.el is full featured unofficial client for Telegram platform for GNU Emacs.
-  Features
+
+  Features:
   * Listing chats, reordering chats according to internal Telegram order
   * Getting info about users, groups and supergroups
   * Joining chats by invitation link M-x telega-chat-join-by-link RET
@@ -31,15 +32,14 @@ description: |
   * Inline bots requests, via "@bot query"
 
   After installing:
-
   * Create an alias for telega-server
 
-       sudo snap alias telega.telega-server telega-server
+  `sudo snap alias telega.telega-server telega-server`
 
   * Add to your emacs configuration
 
-      (add-to-list 'load-path "/snap/telega/current/share/emacs/site-lisp/telega/")
-      (require 'telega)
+  `(add-to-list 'load-path "/snap/telega/current/share/emacs/site-lisp/telega/")
+   (require 'telega)`
 
 
 
