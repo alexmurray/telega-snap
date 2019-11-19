@@ -56,10 +56,10 @@ parts:
       # compile emacs lisp bits
       make compile
       # copy in emacs lisp as though it got built
-      mkdir -p /root/parts/telega/install/share/emacs/site-lisp/telega/
-      cp -v *.el* /root/parts/telega/install/share/emacs/site-lisp/telega/
+      mkdir -p ../install/share/emacs/site-lisp/telega/
+      cp -v *.el* ../install/share/emacs/site-lisp/telega/
       # now build server - this is done automatically via make
-      sed -i 's|/usr/local|/root/parts/tdlib/install|' server/Makefile
+      sed -i "s|/usr/local|$(pwd)/../../tdlib/install|" server/Makefile
       sed -i 's|$(HOME)/.telega|$(DESTDIR)|' server/Makefile
       snapcraftctl build
       snapcraftctl set-version "$(git describe --tags)"
