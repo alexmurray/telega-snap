@@ -30,6 +30,19 @@ description: |
   * Blocking/Unblocking users, listing blocked users
   * Inline bots requests, via "@bot query"
 
+  After installing:
+
+  * Create an alias for telega-server
+
+       sudo snap alias telega.telega-server telega-server
+
+  * Add to your emacs configuration
+
+      (add-to-list 'load-path "/snap/telega/current/share/emacs/site-lisp/telega/")
+      (require 'telega)
+
+
+
 grade: stable
 confinement: strict
 license: GPL-3.0+
