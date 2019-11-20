@@ -94,3 +94,5 @@ parts:
       - zlib1g-dev
       - libssl-dev
       - gperf
+    stage-packages:
+      - libssl1.1
