@@ -97,3 +97,4 @@ parts:
     stage-packages:
       - libssl1.1
       - zlib1g
+      - libstdc++6
