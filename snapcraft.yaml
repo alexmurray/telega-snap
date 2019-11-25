@@ -46,9 +46,6 @@ description: |
 grade: stable
 confinement: strict
 license: GPL-3.0+
-architectures:
-  # fails to build on s390x
-  - build-on: [ ppc64el, arm64, armhf, amd64, i386 ]
 
 apps:
   telega-server:
