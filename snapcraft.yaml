@@ -70,9 +70,12 @@ parts:
       sed -i 's|~/.telega|~/snap/telega/common|' telega-customize.el
       # compile emacs lisp bits
       make compile
-      # copy in emacs lisp as though it got built
-      mkdir -p $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/
+      # copy in emacs lisp as though it got built and
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
       cp -v *.el* $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/
+      # also copy resources from etc
+      cp -v etc/emojis.alist $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
+      cp -v etc/telega-logo.* $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
       # now build server - this is done automatically via make
       sed -i "s|/usr/local|$(pwd)/../../tdlib/install|" server/Makefile
       sed -i 's|$(HOME)/.telega|$(DESTDIR)|' server/Makefile
