@@ -62,7 +62,7 @@ parts:
     plugin: make
     source: https://github.com/zevlg/telega.el
     source-type: git
-    source-tag: 0.6.0
+    source-tag: v0.6.27
     build-snaps:
       - emacs
     override-build: |
@@ -74,18 +74,18 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
       cp -v *.el* $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/
       # also copy resources from etc
+      cp -rv etc/langs $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
       cp -v etc/emojis.alist $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
       cp -v etc/telega-logo.* $SNAPCRAFT_PART_INSTALL/share/emacs/site-lisp/telega/etc
       # now build server - this is done automatically via make
       sed -i "s|/usr/local|$(pwd)/../../tdlib/install|" server/Makefile
       sed -i 's|$(HOME)/.telega|$(DESTDIR)|' server/Makefile
       snapcraftctl build
-      snapcraftctl set-version "$(git describe --tags)"
+      snapcraftctl set-version "$(git describe --tags | sed s/v//)"
   tdlib:
     plugin: cmake
     source: https://github.com/tdlib/td
     source-type: git
-    source-tag: v1.6.0
     configflags:
       - -DCMAKE_BUILD_TYPE=Release
     build-packages:
@@ -99,3 +99,4 @@ parts:
       - libssl1.1
       - zlib1g
       - libstdc++6
+      - webp
