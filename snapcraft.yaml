@@ -62,7 +62,7 @@ parts:
     plugin: make
     source: https://github.com/zevlg/telega.el
     source-type: git
-    source-tag: v0.6.27
+    source-tag: v0.7.1
     build-snaps:
       - emacs
     override-build: |
@@ -86,6 +86,7 @@ parts:
     plugin: cmake
     source: https://github.com/tdlib/td
     source-type: git
+    source-tag: v1.7.0
     configflags:
       - -DCMAKE_BUILD_TYPE=Release
     build-packages:
